@@ -1,0 +1,65 @@
+npm config set cafile "C:\\Users\\611811712\\Downloads\\zscaler.pem"
+
+
+
+describe('thenbs login test', () => {
+  it('logs in the nbs and navigates', () => {
+    cy.visit('https://login.thenbs.com/auth/login');
+    cy.get('#Identification_Email').type('col43@hotmail.com');
+    cy.get('.submit-button').click();
+    cy.get('#Authentication_Password').type('3l3phanT1$$');
+    cy.get('#nextButton').click();
+    cy.visit('https://source.thenbs.com');
+
+    cy.origin('https://source.thenbs.com', () => {
+      cy.contains('button', 'Accept All Cookies').click();
+      cy.get('[data-cy="searchFieldSearch"]').first().type('Dyson');
+      cy.contains("Dyson",{timeout:10000})
+        .should('be.visible',{timeout:10000})
+        .click();
+        cy.url().should('eq', 'https://source.thenbs.com/manufacturer/dyson/nakAxHWxDZprdqkBaCdn4U/overview');
+        cy.contains('08003457788').should('be.visible');
+        
+    });
+
+   
+  });
+});
+
+
+Create your script to automate scenario 1
+Push/publish your changes to Github
+Create a new branch and on this new branch convert your script to use Page Object Model
+(FYI - Rob has a fully implemented POM into his one of his branches for reference)
+
+
+Automate the following scenarios:
+(You may have automated the first few already)
+
+1 - Verify the manufacturers homepage URL contains expected text:
+/manufacturer/dyson/overview
+
+2 - I verify the telephone link has the correct number, protocol and href:
+The number will be correct, the href will be as expected, and the telephone protocol will correct "tel:08003457788"
+
+ 3 - I verify the h1 title text on page is as expected
+                Then The h1 title text will be as expected "Dyson"
+
+ 4 -  I verify the href attribute of the Source logo is as expected
+                The href attribute of the Source logo will be as expected "/"
+
+ 5 -  I verify the external manufacturer link attribute contains the correct url
+                The manufacturer website link is correct "https://www.dyson.co.uk/commercial/overview/architects-designers"
+
+  6 - I verify the contact manufacturer button shows the correct text
+                Then The button will display the correct text "Contact manufacturer"
+
+  7 - I run accessibility checks on the manufacturer homepage using AXE plugin and report results to console
+                The results of the accessibility checks will be output to the console
+
+ 8 - I perform an api test and verify the response and content is as expected (Note: for this I used the example spec’s that were created when we installed Cypress, there are some basic API calls in there that we can use to check response and verify result)
+                Then I should get a 200 response and output request to the console
+                And The response should contain the expected email address "Eliseo@gardner.biz"
+
+ 9 -  I verify the Dyson navigation bar has the correct tabs and expected links (Overview tab, products tab, case studies tab etc)
+                Then The Dyson navigation bar should have the correct tabs and href links
