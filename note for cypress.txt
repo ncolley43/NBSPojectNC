@@ -56,6 +56,7 @@ The number will be correct, the href will be as expected, and the telephone prot
 
   7 - I run accessibility checks on the manufacturer homepage using AXE plugin and report results to console
                 The results of the accessibility checks will be output to the console
+=====⠸Warning: Ignoring extra certs from `C:\Users\611811712\Downloads\TheNBS\Ca_certs\ca-bundle.pem`, load failed: error:80000002:system library::No such file or directory
 
  8 - I perform an api test and verify the response and content is as expected (Note: for this I used the example spec’s that were created when we installed Cypress, there are some basic API calls in there that we can use to check response and verify result)
                 Then I should get a 200 response and output request to the console
@@ -63,3 +64,34 @@ The number will be correct, the href will be as expected, and the telephone prot
 
  9 -  I verify the Dyson navigation bar has the correct tabs and expected links (Overview tab, products tab, case studies tab etc)
                 Then The Dyson navigation bar should have the correct tabs and href links
+
+==============================================================================================
+
+…or create a new repository on the command line
+echo "# NBSPojectNC" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M master 
+git remote add origin https://github.com/ncolley43/NBSPojectNC.git
+git push -u origin master 
+
+…or push an existing repository from the command line
+git remote add origin https://github.com/ncolley43/NBSPojectNC.git
+git branch -M master 
+git push -u origin master 
+
+
+<a _ngcontent-ng-c2201333271="" mat-tab-link="" routerlinkactive="" data-cy="overviewTab" class="mdc-tab mat-mdc-tab-link mat-mdc-focus-indicator ng-star-inserted mdc-tab--active mdc-tab-indicator--active" href="/manufacturer/dyson/nakAxHWxDZprdqkBaCdn4U/overview" aria-controls="mat-tab-nav-panel-1" aria-disabled="false" aria-selected="true" id="mat-tab-link-2" tabindex="0" role="tab"><span class="mdc-tab__ripple"></span><div mat-ripple="" class="mat-ripple mat-mdc-tab-ripple"></div><span class="mdc-tab__content"><span class="mdc-tab__text-label"> Overview </span></span><span class="mdc-tab-indicator"><span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span></span></a>
+
+
+git config --global --edit
+
+ git commit --amend --reset-author
+
+
+
+
+
+
+
