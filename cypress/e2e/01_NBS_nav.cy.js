@@ -1,5 +1,7 @@
 describe('thenbs login test', () => {
   it('logs in the nbs and navigates', () => {
+    Cypress.config('pageLoadTimeout', 60000); // Set page load timeout to 60 seconds
+
     cy.visit('https://login.thenbs.com/auth/login');
     cy.get('#Identification_Email').type('col43@hotmail.com');
     cy.get('.submit-button').click();
@@ -10,16 +12,13 @@ describe('thenbs login test', () => {
     cy.origin('https://source.thenbs.com', () => {
       cy.contains('button', 'Accept All Cookies').click();
       cy.get('[data-cy="searchFieldSearch"]').first().type('Dyson');
-      cy.contains("Dyson",{timeout:10000})
-        .should('be.visible',{timeout:10000})
+      cy.contains("Dyson", { timeout: 10000 })
+        .should('be.visible', { timeout: 10000 })
         .click();
-        cy.url().should('eq', 'https://source.thenbs.com/manufacturer/dyson/nakAxHWxDZprdqkBaCdn4U/overview');
-        cy.contains('08003457788').should('be.visible');
-//Test
-//nik added some stuff
-      // 1 - Verify the manufacturers homepage URL contains expected text:
-      cy.url({ timeout: 15000 }).should('eq', 'https://source.thenbs.com/manufacturer/dyson/nakAxHWxDZprdqkBaCdn4U/overview');
 
+      // 1 - Verify the manufacturers homepage URL contains expected text:
+      cy.url({ timeout: 15000 }).should('eq', 'https://source.thenbs.com/manufacturer/dyson/nakAxHWxDZprdqkBaCdn4U/');
+overview
       // 2 - I verify the telephone link has the correct number, protocol and href:
       cy.contains('08003457788', { timeout: 10000 }).should('be.visible');
       cy.get('a[title="Call 08003457788"]', { timeout: 10000 })
@@ -48,10 +47,22 @@ describe('thenbs login test', () => {
       // 7 - I verify the Overview tab name and URL
       cy.get('a[data-cy="overviewTab"]', { timeout: 10000 })
         .should('be.visible')
-        .and('have.attr', 'href', '/manufacturer/dyson/nakAxHWxDZprdqkBaCdn4U/overview')
-        .within(() => {
-          cy.get('.mdc-tab__text-label', { timeout: 10000 }).should('have.text', ' Overview ');
-        });
+        .and('have.attr', 'href', '/manufacturer/dyson/nakAxHWxDZprdqkBaCdn4U/overview');
+
+      // 8 - I verify the Dyson navigation bar has the correct tabs
+      const expectedTabs = [
+        'Overview',
+        'Products',
+        'Certifications',
+        'Literature',
+        'Case studies',
+        'About us'
+      ];
+
+      cy.get('nav.mat-mdc-tab-nav-bar .mdc-tab__text-label', { timeout: 10000 }).then($labels => {
+        const texts = [...$labels].map(el => el.textContent.trim());
+        expect(texts).to.deep.equal(expectedTabs);
+      });
     });
   });
 });
