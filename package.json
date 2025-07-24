@@ -1,7 +1,4 @@
 {
-  "name": "cypress",
-  "version": "1.0.0",
-  "type": "commonjs",
   "scripts": {
     "cypress:open": "cypress open",
     "cypress:run": "cypress run"
@@ -11,5 +8,5 @@
   },
   "dependencies": {
     "cypress-axe": "^1.6.0"
-    }
   }
+}
