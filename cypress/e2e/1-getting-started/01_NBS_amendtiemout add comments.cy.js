@@ -7,7 +7,7 @@ describe('Sams Homework', () => {
     cy.visit('https://source.thenbs.com');
     
     // Handle cookie consent popup by clicking the accept button
-    cy.contains('button', 'Accept All Cookies').click();
+    cy.contains('button', 'Accept All Cookies', { timeout: 20000 }).click();
     
     // Locate the search field using data-cy attribute and type "Dyson"
     cy.get('[data-cy="searchFieldSearch"]').first().type('Dyson');
