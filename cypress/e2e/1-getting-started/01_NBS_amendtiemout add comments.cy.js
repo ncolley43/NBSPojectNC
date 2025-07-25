@@ -83,8 +83,7 @@ describe('Sams Homework', () => {
   it('8 - Verifies the Dyson navigation bar has the correct tabs', () => {
     // This test repeats the setup since it needs to verify navigation structure
     // Navigate to main page and perform search again
-    cy.visit('https://source.thenbs.com');
-    
+      
     
     
     // Define the expected tab names in the correct order
