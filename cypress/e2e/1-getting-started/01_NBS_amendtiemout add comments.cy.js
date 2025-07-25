@@ -85,12 +85,7 @@ describe('Sams Homework', () => {
     // Navigate to main page and perform search again
     cy.visit('https://source.thenbs.com');
     
-    // Handle cookies and search for Dyson
-    cy.contains('button', 'Accept All Cookies').click();
-    cy.get('[data-cy="searchFieldSearch"]').first().type('Dyson');
-    cy.contains("Dyson", { timeout: 20000 })
-      .should('be.visible', { timeout: 20000 })
-      .click();
+    
     
     // Define the expected tab names in the correct order
     const expectedTabs = [
