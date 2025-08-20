@@ -33,3 +33,5 @@ jobs:
  
     - name: Run only Dyson homepage feature
       run: npx cypress run --spec "cypress/e2e/1-getting-started/01_NBS_amendtiemout add comments.cy.js" --headed --browser electron
+
+    name: Cypress Tests on:   push:     branches: [ main, develop ]   pull_request:     branches: [ main ]  jobs:   cypress-run:     runs-on: ubuntu-latest    steps:       - name: Checkout code        uses: actions/checkout@v4       - name: Setup Node.js        uses: actions/setup-node@v4        with:           node-version: '18'           cache: 'npm'        - name: Install dependencies        run: npm ci       - name: Run Cypress tests        uses: cypress-io/github-action@v6        with:           record: true                    # Enable recording           parallel: true                  # Optional: enable parallel runs         env:           CYPRESS_RECORD_KEY: ${{ secrets.be50ede2-95a9-4246-9c33-5579af0219ee }}           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

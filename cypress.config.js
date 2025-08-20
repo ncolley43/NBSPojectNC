@@ -1,6 +1,7 @@
 const { defineConfig } = require('cypress');
-
+ 
 module.exports = defineConfig({
+  projectId: "pzdgxg", // Add this line for Cypress Cloud integration
   e2e: {
     setupNodeEvents(on, config) {
       // Custom task for logging
@@ -10,7 +11,6 @@ module.exports = defineConfig({
           return null; // always return something from a task
         },
       });
-      
       // implement other node event listeners here
     },
     specPattern: 'cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',
