@@ -1,0 +1,35 @@
+name: CI Pipeline
+ 
+on:
+  push:
+    branches:
+      - master  # Triggers on pushes to the master branch
+  pull_request:
+    branches:
+      - master
+ 
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+ 
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Clear cache
+      run: |
+        rm -rf node_modules
+        npm cache clean --force
+   
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20.15.0'  # Specify your Node version
+ 
+    - name: Install dependencies
+      run: npm install --legacy-peer-deps  # Adjust for your package manager if not using npm
+ 
+    - name: Install axe-core
+      run: npm install --save-dev axe-core
+ 
+    - name: Run only Dyson homepage feature
+      run: npx cypress run --spec "cypress/e2e/1-getting-started/01_NBS_amendtiemout add comments.cy.js" --headed --browser electron
