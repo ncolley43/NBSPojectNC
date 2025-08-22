@@ -12,7 +12,7 @@ describe('Sams Homework', () => {
     // Navigate to main page
     cy.visit('https://source.thenbs.com');
 
-    // Handle cookies and search for Dyson
+    // Handle cookies and search for Dyson   nik added
     cy.origin('https://source.thenbs.com', () => {
       cy.contains('button', 'Accept All Cookies', { timeout: 10000 }).click();
       cy.get('[data-cy="searchFieldSearch"]').first().type('Dyson');
