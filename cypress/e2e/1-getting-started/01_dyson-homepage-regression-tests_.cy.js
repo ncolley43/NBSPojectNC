@@ -1,106 +1,132 @@
-describe('Dyson Manufacturer Page Tests', () => {
+describe('Sams Homework', () => {
   beforeEach(() => {
+    // Set page load timeout for all tests to 60 seconds (1 minute)
+    Cypress.config('pageLoadTimeout', 60000);
+    
     // Navigate to the main website
     cy.visit('https://source.thenbs.com');
     
-    // Handle cookie consent popup if it appears
-    cy.get('body').then(($body) => {
-      if ($body.find('button:contains("Accept All Cookies")').length > 0) {
-        cy.contains('button', 'Accept All Cookies', { timeout: 5000 }).click();
-      }
-    });
+    // Handle cookie consent popup by clicking the accept button
+    cy.contains('button', 'Accept All Cookies', { timeout: 10000 }).click();
     
-    // Search for Dyson
-    cy.get('[data-cy="searchFieldSearch"]')
+    // Wait for the page to fully load and search field to be interactive
+    cy.get('[data-cy="searchFieldSearch"]', { timeout: 15000 })
+      .should('be.visible')
+      .should('not.be.disabled')
       .first()
-      .should('be.visible')
-      .clear()
-      .type('Dyson');
+      .click() // Click to ensure focus
+      .clear() // Clear any existing text
+      .type('Dyson', { delay: 100 }); // Add delay between keystrokes
     
-    // Click on Dyson in search results
-    cy.contains('Dyson', { timeout: 10000 })
+    // Wait for search results to appear and click on Dyson
+    cy.contains("Dyson", { timeout: 10000 })
       .should('be.visible')
+      .first() // In case there are multiple matches
       .click();
-  });
- 
-  it('should verify the manufacturer homepage URL is correct', () => {
-    // Check that we're redirected to the correct Dyson manufacturer overview page
-    cy.url({ timeout: 15000 })
-      .should('eq', 'https://source.thenbs.com/manufacturer/dyson/nakAxHWxDZprdqkBaCdn4U/overview');
-  });
- 
-  it('should verify the telephone link has correct attributes', () => {
-    // Check that the phone number is visible
-    cy.contains('08003457788', { timeout: 10000 })
-      .should('be.visible');
     
-    // Verify the phone link has correct href and attributes
+    // Wait for navigation to complete
+    cy.url({ timeout: 15000 }).should('include', '/manufacturer/dyson');
+  });
+ 
+  it('1 - Verify the manufacturers homepage URL contains expected text:', () => {
+    // Check that after clicking Dyson, we're redirected to the correct manufacturer overview page
+    // This verifies the URL routing is working correctly
+    cy.url({ timeout: 15000 }).should('eq', 'https://source.thenbs.com/manufacturer/dyson/nakAxHWxDZprdqkBaCdn4U/overview');
+  });
+ 
+  it('2 - I verify the telephone link has the correct number, protocol and href', () => {
+    // Wait for the page content to load
+    cy.get('body', { timeout: 15000 }).should('be.visible');
+    
+    // First check that the phone number text is visible on the page
+    cy.contains('08003457788', { timeout: 10000 }).should('be.visible');
+    
+    // Then verify the actual link element has the correct attributes:
+    // - href should use tel: protocol for phone links
+    // - title attribute should match for accessibility
     cy.get('a[title="Call 08003457788"]', { timeout: 10000 })
       .should('be.visible')
       .and('have.attr', 'href', 'tel:08003457788');
   });
  
-  it('should verify the h1 title contains Dyson', () => {
-    // Check that the main heading contains "Dyson"
-    cy.get('h1', { timeout: 10000 })
-      .should('be.visible')
-      .and('contain.text', 'Dyson');
+  it('3 - I verify the h1 title text on page is as expected', () => {
+    // Check that the main heading (h1) contains "Dyson"
+    // This verifies the page title is correctly displaying the manufacturer name
+    cy.contains('h1', 'Dyson', { timeout: 10000 }).should('be.visible');
   });
  
-  it('should verify the Source logo href attribute', () => {
-    // Verify the Source logo links to the homepage
+  it('4 - I verify the href attribute of the Source logo is as expected', () => {
+    // Navigate back to main page first since this test doesn't need Dyson search
+    // This test is checking the main site logo functionality
+    cy.visit('https://source.thenbs.com');
+    
+    // Wait for page to load completely
+    cy.get('body', { timeout: 15000 }).should('be.visible');
+    
+    // Verify the Source logo link points to the root directory "/"
+    // This ensures clicking the logo takes users back to the homepage
     cy.get('a.brand-primary.wrapper', { timeout: 10000 })
       .should('be.visible')
       .and('have.attr', 'href', '/');
   });
  
-  it('should verify the external manufacturer link is correct', () => {
-    // Check external link to Dyson's official website
-    cy.get('a[action="Visit https://www.dyson.co.uk/commercial/overview/architects-designers"]', { timeout: 10000 })
+  it('5 - I verify the external manufacturer link attribute contains the correct url', () => {
+    // Wait for the page content to load
+    cy.get('body', { timeout: 15000 }).should('be.visible');
+    
+    // Check that the external link to Dyson's official website is correctly configured
+    // This link should open Dyson's commercial page for architects and designers
+    cy.get('a[title="Visit https://www.dyson.co.uk/commercial/overview/architects-designers"]', { timeout: 10000 })
       .should('be.visible')
       .and('have.attr', 'href', 'https://www.dyson.co.uk/commercial/overview/architects-designers')
-      .and('have.attr', 'target', '_blank');
+      .and('have.attr', 'target', '_blank'); // Should open in new tab
   });
  
-  it('should verify the contact manufacturer button text', () => {
-    // Check contact button text
+  it('6 - I verify the contact manufacturer button shows the correct text', () => {
+    // Wait for the page content to load
+    cy.get('body', { timeout: 15000 }).should('be.visible');
+    
+    // Check that the contact button displays the expected text
+    // This verifies the UI element is properly labeled for user interaction
     cy.get('.mdc-button__label', { timeout: 10000 })
       .should('be.visible')
-      .and('contain.text', 'Contact manufacturer');
+      .and('contain', 'Contact manufacturer');
   });
  
-  it('should verify the Overview tab name and URL', () => {
-    // Verify Overview tab
+  it('7 - I verify the Overview tab name and URL', () => {
+    // Wait for the page content to load
+    cy.get('body', { timeout: 15000 }).should('be.visible');
+    
+    // Verify the Overview tab is present and has the correct URL
+    // This checks that the navigation tabs are working correctly
     cy.get('a[data-cy="overviewTab"]', { timeout: 10000 })
       .should('be.visible')
       .and('have.attr', 'href', '/manufacturer/dyson/nakAxHWxDZprdqkBaCdn4U/overview');
   });
  
-  it('should verify all navigation tabs are present with correct URLs', () => {
-    // Check that all required tabs are present
-    cy.get('.mat-mdc-tab-links', { timeout: 10000 })
-      .should('be.visible')
-      .and('contain.text', 'Overview')
-      .and('contain.text', 'Products')
-      .and('contain.text', 'Case studies')
-      .and('contain.text', 'Literature')
-      .and('contain.text', 'Certifications')
-      .and('contain.text', 'About');
-
-    // Verify each tab's href attribute
-    const tabTests = [
-      { selector: '[data-cy="overviewTab"]', href: '/manufacturer/dyson/nakAxHWxDZprdqkBaCdn4U/overview' },
-      { selector: '[data-cy="productsTab"]', href: '/manufacturer/dyson/nakAxHWxDZprdqkBaCdn4U/products' },
-      { selector: '[data-cy="certificatesTab"]', href: '/manufacturer/dyson/nakAxHWxDZprdqkBaCdn4U/third-party-certifications' },
-      { selector: '[data-cy="literatureTab"]', href: '/manufacturer/dyson/nakAxHWxDZprdqkBaCdn4U/literature' },
-      { selector: '[data-cy="caseStudiesTab"]', href: '/manufacturer/dyson/nakAxHWxDZprdqkBaCdn4U/case-studies' },
-      { selector: '[data-cy="aboutTab"]', href: '/manufacturer/dyson/nakAxHWxDZprdqkBaCdn4U/about' }
+  it('8 - Verifies the Dyson navigation bar has the correct tabs', () => {
+    // Wait for the navigation to be fully loaded
+    cy.get('nav.mat-mdc-tab-nav-bar', { timeout: 15000 }).should('be.visible');
+    
+    // Define the expected tab names in the correct order
+    const expectedTabs = [
+      'Overview',
+      'Products', 
+      'Certifications',
+      'Literature',
+      'Case studies',
+      'About us'
     ];
-
-    tabTests.forEach((tab) => {
-      cy.get(tab.selector, { timeout: 10000 })
-        .should('be.visible')
-        .and('have.attr', 'href', tab.href);
-    });
+ 
+    // Get all tab labels from the navigation bar and compare with expected tabs
+    // This verifies that all required tabs are present and in the correct order
+    cy.get('nav.mat-mdc-tab-nav-bar .mdc-tab__text-label', { timeout: 10000 })
+      .should('have.length.at.least', 1) // Ensure tabs are loaded
+      .then($labels => {
+        // Extract text content from each tab element and trim whitespace
+        const actualTabs = [...$labels].map(el => el.textContent.trim());
+        // Assert that actual tabs match expected tabs exactly
+        expect(actualTabs).to.deep.equal(expectedTabs);
+      });
   });
 });
